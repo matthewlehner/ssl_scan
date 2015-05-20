@@ -23,10 +23,10 @@ class Scanner
     @timeout    = timeout
     @context    = context
     if check_opensslv2 == true
-      @supported_versions = [:SSLv23, :SSLv3, :TLSv1]
+      @supported_versions = [:SSLv23, :SSLv3, :TLSv1, :TLSv1_1, :TLSv1_2]
       @sslv2 = true
     else
-      @supported_versions = [:SSLv3, :TLSv1]
+      @supported_versions = [:SSLv3, :TLSv1, :TLSv1_1, :TLSv1_2]
       @sslv2 = false
     end
     @peer_supported_versions = []
