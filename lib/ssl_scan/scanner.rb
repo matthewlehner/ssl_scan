@@ -23,7 +23,7 @@ class Scanner
     @timeout    = timeout
     @context    = context
     if check_opensslv2 == true
-      @supported_versions = [:SSLv2, :SSLv3, :TLSv1]
+      @supported_versions = [:SSLv23, :SSLv3, :TLSv1]
       @sslv2 = true
     else
       @supported_versions = [:SSLv3, :TLSv1]
@@ -71,7 +71,7 @@ class Scanner
       end
     end
     @peer_supported_versions = [].tap do |psv|
-      psv << :SSLv2 if scan_result.supports_sslv2?
+      psv << :SSLv23 if scan_result.supports_sslv2?
       psv << :SSLv3 if scan_result.supports_sslv3?
       psv << :TLSv1 if scan_result.supports_tlsv1?
     end
@@ -287,7 +287,7 @@ class Scanner
     unless @supported_versions.include? ssl_version
       raise StandardError, "SSL Version must be one of: #{@supported_versions.to_s}"
     end
-    if ssl_version == :SSLv2 and sslv2 == false
+    if ssl_version == :SSLv23 and sslv2 == false
       raise StandardError, "Your OS hates freedom! Your OpenSSL libs are compiled without SSLv2 support!"
     else
       unless OpenSSL::SSL::SSLContext.new(ssl_version).ciphers.flatten.include? cipher
@@ -298,7 +298,7 @@ class Scanner
 
   def check_opensslv2
     begin
-      OpenSSL::SSL::SSLContext.new(:SSLv2)
+      OpenSSL::SSL::SSLContext.new(:SSLv23)
     rescue
       return false
     end

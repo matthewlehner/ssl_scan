@@ -13,7 +13,7 @@ module SSLScan
       @cert = nil
       @ciphers = Set.new
       @peer_verified = false
-      @supported_versions = [:SSLv2, :SSLv3, :TLSv1]
+      @supported_versions = [:SSLv23, :SSLv3, :TLSv1]
     end
 
     def cert
@@ -28,7 +28,7 @@ module SSLScan
     end
 
     def sslv2
-      @ciphers.reject{|cipher| cipher[:version] != :SSLv2 }
+      @ciphers.reject{|cipher| cipher[:version] != :SSLv23 }
     end
 
     def sslv3
@@ -80,7 +80,7 @@ module SSLScan
     end
 
     def supports_sslv2?
-      !(accepted(:SSLv2).empty?)
+      !(accepted(:SSLv23).empty?)
     end
 
     def supports_sslv3?
@@ -152,7 +152,7 @@ module SSLScan
         case version
         when :all
           return @ciphers.select { |cipher| cipher[:status] == state }
-        when :SSLv2, :SSLv3, :TLSv1
+        when :SSLv23, :SSLv3, :TLSv1
           return @ciphers.select { |cipher| cipher[:status] == state and cipher[:version] == version }
         else
           raise ArgumentError, "Invalid SSL Version Supplied: #{version}"

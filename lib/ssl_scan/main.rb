@@ -220,7 +220,7 @@ EOH
 
         opts.on( "--ssl2",
                  "Only check SSLv2 ciphers.") do
-          options.only_ssl2 = :SSLv2
+          options.only_ssl2 = :SSLv23
         end
 
         opts.on( "--ssl3",
